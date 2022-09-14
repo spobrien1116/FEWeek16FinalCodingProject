@@ -1,0 +1,64 @@
+.dinosaur-database {
+  background-color: #8f8e8e;
+}
+
+.cardDinoName {
+  text-emphasis: bold;
+}
+
+.card-header {
+  background-color: #daa30e !important;
+}
+
+.card-body {
+  background-color: #000000;
+}
+
+.card {
+  background-color: #5a5a5a !important;
+}
+
+#dinoForm {
+  background-color: #ca4511;
+}
+
+.dinoFormLabel {
+  background-color: #e9c917 !important;
+}
+
+.dinoFormInput {
+  background-color: #35d7ff !important;
+}
+
+.dinoInfo li:nth-child(even) {
+  background-color: #196b0e;
+  color: #e7d2d2;
+}
+
+.dinoInfo li:nth-child(odd) {
+  background-color: #56e1f3;
+  color: #613d0d;
+}
+
+.featureDeleteButton {
+  margin-left: 1rem;
+}
+
+.dinoFeatures li:nth-child(even) {
+  background-color: #613d0d;
+  color: #56e1f3;
+}
+
+.dinoFeatures li:nth-child(odd) {
+  background-color: #e7d2d2;
+  color: #196b0e;
+}
+
+.featureInput {
+  background-color: #35d7ff !important;
+}
+
+.page-intro {
+  background-color: #000000;
+  color: #ffffff;
+}
