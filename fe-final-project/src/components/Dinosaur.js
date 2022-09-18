@@ -1,6 +1,5 @@
 import React from "react";
 import { NewFeatureForm } from "./NewFeatureForm";
-import TRex from "../images/sad-dino.jpg";
 
 export const Dinosaur = (props) => {
   const { dinosaur, updateDinosaur, deleteDinosaur } = props;

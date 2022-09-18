@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import TRex from "../images/sad-dino.jpg";
+import Anky from "../images/ankylosaurus.jpg";
+import Basilo from "../images/basilosaurus.jpg";
+import Brachi from "../images/brachiosaurus.jpg";
+import Giga from "../images/giganotosaurus.jpg";
+import Ptero from "../images/pterodactyl.jpg";
+import Spino from "../images/spinosaurus.jpg";
+import Stego from "../images/stegosaurus.jpg";
+import Trike from "../images/triceratops.jpg";
+import TRex from "../images/tyrannosaurus-rex.jpg";
+import Unknown from "../images/unknown-dino.jpg";
+import Velo from "../images/velociraptor.jpg";
 
 export const NewDinosaurForm = (props) => {
   const [name, setName] = useState("");
@@ -10,8 +20,8 @@ export const NewDinosaurForm = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (name && size && diet && environment) {
-      props.addNewDinosaur({ name, size, diet, environment });
+    if (name && size && diet && environment && image) {
+      props.addNewDinosaur({ name, size, diet, environment, image });
       setName("");
       setSize("");
       setDiet("");
@@ -94,9 +104,18 @@ export const NewDinosaurForm = (props) => {
             value={image}
             onChange={(e) => setImage(e.target.value)}
           >
+            <option value="">--Please select an option--</option>
+            <option value={Anky}>Ankylosaurus</option>
+            <option value={Basilo}>Basilosaurus</option>
+            <option value={Brachi}>Brachiosaurus</option>
+            <option value={Giga}>Giganotosaurus</option>
+            <option value={Ptero}>Pterodactyl</option>
+            <option value={Spino}>Spinosaurus</option>
+            <option value={Stego}>Stegosaurus</option>
+            <option value={Trike}>Triceratops</option>
             <option value={TRex}>Tyrannosaurus Rex</option>
-            <option value="B">Banana</option>
-            <option value="C">Cranberry</option>
+            <option value={Unknown}>Unknown (picture not in database)</option>
+            <option value={Velo}>Velociraptor</option>
           </select>
         </div>
         <div>
