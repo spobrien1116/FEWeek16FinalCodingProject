@@ -29,7 +29,7 @@ export const MinimalDinosaur = (props) => {
       <ul className="list-group list-group-flush dinoFeatures">
         {dinosaur.features.map((feature, index) => (
           <li key={index} className="list-group-item">
-            <b>Body Part: </b> {`${feature.part}`}
+            <b>Body Part: </b> {`${feature.part}    `}
             <b>Color: </b> {`${feature.color}   `}
             <button
               className="btn btn-success selectAttackButton"
