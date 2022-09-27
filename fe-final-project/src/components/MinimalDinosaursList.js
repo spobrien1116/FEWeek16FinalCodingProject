@@ -4,8 +4,8 @@ import { dinosaurAPI } from "../rest/DinosaurAPI.js";
 import { dinosaurBattlesAPI } from "../rest/DinosaurBattlesAPI.js";
 
 export class MinimalDinosaursList extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       dinosaurs: [],
       battlingDinosaurs: [],
@@ -15,6 +15,7 @@ export class MinimalDinosaursList extends React.Component {
   componentDidMount() {
     console.log("The MinimalDinosaursList component did mount!");
     this.fetchDinosaurs();
+    this.fetchBattleDinosaurs();
   }
 
   fetchDinosaurs = async () => {
@@ -34,59 +35,75 @@ export class MinimalDinosaursList extends React.Component {
   };
 
   createBattleDinosaur = async (battleReadyDino) => {
+    console.log("Inside the createBattleDinosaur function!");
+    console.log("The current state of dinosaurs:", this.state.dinosaurs);
     console.log(
-      "An asynchronous API call has been made to the DinosaurBattles endpoint to update with a new battling dinosaur!"
+      "The current state of battlingDinosaurs:",
+      this.state.battlingDinosaurs
     );
-    await dinosaurBattlesAPI.post({ battleReadyDino });
-    //Set the state of battlingDinosaurs after creating the dinosaur. See if statement below.
-    this.fetchBattleDinosaurs();
-    //Create an if statement that checks if there are two battle ready dinosaurs. If so, launch into the battle function.
-    if (this.state.battlingDinosaurs.length === 2) {
-      console.log("It is time for these two dinosaurs to battle!");
-    }
-  };
-
-  readyForBattle(chosenDinosaurAndAttack) {
-    console.log("Inside the readyForBattle function!");
-    console.log(this.state.dinosaurs);
-    console.log(this.state.battlingDinosaurs);
+    /* If statement that checks to see if there are less than 2 battle ready dinosaurs in the dinosaurBattlesAPI.
+    If there is not, than it will not allow the creation of another battlingDinosaur object in the API. */
     if (this.state.battlingDinosaurs.length < 2) {
       console.log(
-        "The dinosaur chosen for battle is",
-        chosenDinosaurAndAttack.name
+        "An asynchronous API call has been made to the DinosaurBattles endpoint to update with a new battling dinosaur!"
       );
+      await dinosaurBattlesAPI.post({ battleReadyDino });
+      //Set the state of battlingDinosaurs after creating the dinosaur. See if statement below.
+      await this.fetchBattleDinosaurs();
+      //Create an if statement that checks if there are two battle ready dinosaurs. If so, launch into the battle function.
       console.log(
-        "The chosen attack is based on its",
-        chosenDinosaurAndAttack.attack,
-        "feature."
+        `The number of dinosaurs in the battlingDinosaurs array after awaiting a fetch: ${this.state.battlingDinosaurs.length}`
       );
-      //Create the random health variable here.
-      let randomHealth = this.generateRandomNumber("health", 30, 75);
-      //Create the random attack variable here.
-      let randomPower = this.generateRandomNumber("power", 5, 15);
-      //Create the new dinosaur object to pass into createBattleDinosaur here.
-      const battleReadyDino = {
-        name: this.chosenDinosaurAndAttack.name,
-        attack: this.chosenDinosaurAndAttack.attack,
-        image: this.chosenDinosaurAndAttack.image,
-        health: randomHealth,
-        power: randomPower,
-      };
-      this.createBattleDinosaur(battleReadyDino);
+      if (this.state.battlingDinosaurs.length === 2) {
+        console.log("It is time for these two dinosaurs to battle!");
+      }
     } else {
       console.log("Only two dinosaurs can battle at a time!");
     }
-  }
+  };
+
+  readyForBattle = (chosenDinosaurAndAttack) => {
+    console.log("Inside the readyForBattle function!");
+    console.log(
+      "The dinosaur chosen for battle is",
+      chosenDinosaurAndAttack.name
+    );
+    console.log(
+      "The chosen attack is based on its",
+      chosenDinosaurAndAttack.attack,
+      "feature."
+    );
+    //Create the random health variable here.
+    let randomHealth = this.generateRandomNumber("health", 30, 75);
+    console.log(`The random health chosen was ${randomHealth}.`);
+    //Create the random attack variable here.
+    let randomPower = this.generateRandomNumber("power", 5, 15);
+    console.log(`The random power chosen was ${randomPower}.`);
+    //Create the new dinosaur object to pass into createBattleDinosaur here.
+    const battleReadyDino = {
+      name: chosenDinosaurAndAttack.name,
+      attack: chosenDinosaurAndAttack.attack,
+      image: chosenDinosaurAndAttack.image,
+      health: randomHealth,
+      power: randomPower,
+    };
+    console.log("The dinosaur being created:", battleReadyDino);
+    this.createBattleDinosaur(battleReadyDino);
+  };
 
   //Function that generates a random number between (and/or including) two values. It is used for dinosaur health and power.
-  generateRandomNumber(numberName, minimum, maximum) {
-    console.log("Inside the generateRandomNumber function for", numberName);
-    console.log(minimum, "is the minimum value for", numberName, ".");
-    console.log(maximum, "is the maximum value for", numberName, ".");
+  generateRandomNumber = (numberName, minimum, maximum) => {
+    console.log(
+      "Inside the generateRandomNumber function for",
+      numberName,
+      "."
+    );
+    console.log(`${minimum} is the minimum value for ${numberName}.`);
+    console.log(`${maximum} is the maximum value for ${numberName}.`);
     let min = Math.ceil(minimum);
     let max = Math.floor(maximum);
     return Math.floor(Math.random() * (max - min + 1) + min);
-  }
+  };
 
   render() {
     return (
