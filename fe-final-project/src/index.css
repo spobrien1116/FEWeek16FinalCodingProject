@@ -97,3 +97,20 @@
   margin-right: auto;
   width: 50%;
 }
+
+.home-content {
+  background-color: #196b0e;
+}
+
+.home-info {
+  color: #56e1f3;
+}
+
+.secret {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.about-me {
+  background-color: #8f8e8e;
+}

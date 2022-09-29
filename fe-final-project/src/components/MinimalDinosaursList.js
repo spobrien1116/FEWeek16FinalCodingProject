@@ -41,6 +41,14 @@ export class MinimalDinosaursList extends React.Component {
     return battlingDinosaurs;
   };
 
+  deleteBattleDinosaurs = async () => {
+    console.log(
+      "An asynchronous API call has been made to DELETE (delete) all battling dinosaurs!"
+    );
+    await dinosaurBattlesAPI.delete();
+    return this.fetchBattleDinosaurs();
+  };
+
   createBattleDinosaur = async (battleReadyDino) => {
     console.log("Inside the createBattleDinosaur function!");
     console.log("The current state of dinosaurs:", this.state.dinosaurs);
@@ -97,6 +105,8 @@ export class MinimalDinosaursList extends React.Component {
         } else {
           console.log("Oh no, both dinosaurs passed out! It is a tie.");
         }
+        const emptyBattlingDinosaurs = await this.deleteBattleDinosaurs();
+        this.setState({ battlingDinosaurs: emptyBattlingDinosaurs });
       }
     } else {
       console.log("Only two dinosaurs can battle at a time!");

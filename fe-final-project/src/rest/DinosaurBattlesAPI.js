@@ -38,9 +38,9 @@ class DinosaurBattlesAPI {
   };
 
   // The API for a DELETE (delete).
-  delete = async (id) => {
+  delete = async () => {
     try {
-      const resp = await fetch(`${DINOSAUR_ENDPOINT}/${id}`, {
+      const resp = await fetch(`${DINOSAUR_ENDPOINT}`, {
         method: "DELETE",
       });
       const data = await resp.json();
