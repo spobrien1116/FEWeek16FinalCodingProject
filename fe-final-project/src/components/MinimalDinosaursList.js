@@ -1,4 +1,5 @@
 import React from "react";
+import { BattleDinosaur } from "../components/BattleDinosaur";
 import { MinimalDinosaur } from "../components/MinimalDinosaur";
 import { dinosaurAPI } from "../rest/DinosaurAPI.js";
 import { dinosaurBattlesAPI } from "../rest/DinosaurBattlesAPI.js";
@@ -15,7 +16,9 @@ export class MinimalDinosaursList extends React.Component {
   componentDidMount() {
     console.log("The MinimalDinosaursList component did mount!");
     this.fetchDinosaurs();
-    this.fetchBattleDinosaurs();
+    this.fetchBattleDinosaurs().then((battlingDinosaurs) => {
+      this.setState({ battlingDinosaurs });
+    });
   }
 
   fetchDinosaurs = async () => {
@@ -23,7 +26,7 @@ export class MinimalDinosaursList extends React.Component {
       "An asynchronous API call has been made to fetch/READ (get) all dinosaurs!"
     );
     const dinosaurs = await dinosaurAPI.get();
-    this.setState({ dinosaurs: dinosaurs });
+    this.setState({ dinosaurs });
   };
 
   fetchBattleDinosaurs = async () => {
@@ -31,7 +34,11 @@ export class MinimalDinosaursList extends React.Component {
       "An asynchronous API call has been made to fetch/READ (get) all battle dinosaurs!"
     );
     const battlingDinosaurs = await dinosaurBattlesAPI.get();
-    this.setState({ battlingDinosaurs: battlingDinosaurs });
+    console.log(
+      "This is the response from getting the list of battling dinosaurs from the API:",
+      battlingDinosaurs
+    );
+    return battlingDinosaurs;
   };
 
   createBattleDinosaur = async (battleReadyDino) => {
@@ -47,15 +54,49 @@ export class MinimalDinosaursList extends React.Component {
       console.log(
         "An asynchronous API call has been made to the DinosaurBattles endpoint to update with a new battling dinosaur!"
       );
-      await dinosaurBattlesAPI.post({ battleReadyDino });
+      await dinosaurBattlesAPI.post(battleReadyDino);
       //Set the state of battlingDinosaurs after creating the dinosaur. See if statement below.
-      await this.fetchBattleDinosaurs();
+      const battlingDinosaurs = await this.fetchBattleDinosaurs();
       //Create an if statement that checks if there are two battle ready dinosaurs. If so, launch into the battle function.
       console.log(
-        `The number of dinosaurs in the battlingDinosaurs array after awaiting a fetch: ${this.state.battlingDinosaurs.length}`
+        `The number of dinosaurs in the battlingDinosaurs array after awaiting a fetch: ${battlingDinosaurs.length}`
       );
-      if (this.state.battlingDinosaurs.length === 2) {
+      this.setState({ battlingDinosaurs });
+      if (battlingDinosaurs.length === 2) {
         console.log("It is time for these two dinosaurs to battle!");
+        /* This is where the two dinosaurs simultaneously use their attacks against each other's health.
+        If one dinosaur is still standing when the other is brought to 0 or less health, it is the winner.
+        If both are knocked out, then it is declared a tie.
+        Afterwards, the battlingDinosaurs database should have its contents be deleted. */
+        let dino1HP = battlingDinosaurs[0].health;
+        let dino2HP = battlingDinosaurs[1].health;
+        do {
+          console.log(
+            `${battlingDinosaurs[0].name} uses ${battlingDinosaurs[0].attack} to attack ${battlingDinosaurs[1].name} for ${battlingDinosaurs[0].power} damage!`
+          );
+          console.log(
+            `${battlingDinosaurs[1].name} uses ${battlingDinosaurs[1].attack} to attack ${battlingDinosaurs[0].name} for ${battlingDinosaurs[1].power} damage!`
+          );
+          console.log(
+            `${battlingDinosaurs[0].name}  went from ${dino1HP} health to ${
+              dino1HP - battlingDinosaurs[1].power
+            } health.`
+          );
+          console.log(
+            `${battlingDinosaurs[1].name}  went from ${dino2HP} health to ${
+              dino2HP - battlingDinosaurs[0].power
+            } health.`
+          );
+          dino1HP = dino1HP - battlingDinosaurs[1].power;
+          dino2HP = dino2HP - battlingDinosaurs[0].power;
+        } while (dino1HP > 0 && dino2HP > 0);
+        if (dino1HP > 0 && dino2HP <= 0) {
+          console.log(`${battlingDinosaurs[0].name} is the winner!`);
+        } else if (dino2HP > 0 && dino1HP <= 0) {
+          console.log(`${battlingDinosaurs[1].name} is the winner!`);
+        } else {
+          console.log("Oh no, both dinosaurs passed out! It is a tie.");
+        }
       }
     } else {
       console.log("Only two dinosaurs can battle at a time!");
@@ -119,6 +160,9 @@ export class MinimalDinosaursList extends React.Component {
         </div>
         <div className="battling-dinosaurs">
           <h1>Let the battle begin!</h1>
+          {this.state.battlingDinosaurs.map((dinosaur) => (
+            <BattleDinosaur dinosaur={dinosaur} key={`battle${dinosaur._id}`} />
+          ))}
         </div>
       </div>
     );

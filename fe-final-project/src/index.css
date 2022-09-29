@@ -6,7 +6,7 @@
   text-emphasis: bold;
 }
 
-.card-header {
+.cardHeaderNormal {
   background-color: #daa30e !important;
 }
 
@@ -65,4 +65,35 @@
 
 .data-for-battles {
   background-color: #8f8e8e;
+}
+
+.cardHeaderBattle {
+  background-color: #551616 !important;
+  color: #ff0000 !important;
+}
+
+.cardBattleDinoName {
+  text-emphasis: bold;
+}
+
+.battleDinoAttack {
+  background-color: #e7d2d2 !important;
+  color: #196b0e !important;
+}
+
+.battleDinoPower {
+  background-color: #e9c917 !important;
+  color: #ca4511 !important;
+}
+
+.battleDinoHealth {
+  background-color: #196b0e !important;
+  color: #000000 !important;
+}
+
+.centerImage {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }

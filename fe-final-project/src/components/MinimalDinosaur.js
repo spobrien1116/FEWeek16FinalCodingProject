@@ -23,37 +23,41 @@ export const MinimalDinosaur = (props) => {
 
   return (
     <div className="card p-4 m-2" key={dinosaur._id}>
-      <div className="card-header">
+      <div className="card-header cardHeaderNormal">
         <h3 className="cardDinoName">{dinosaur.name}</h3>
       </div>
-      <ul className="list-group list-group-flush dinoFeatures">
-        {dinosaur.features.map((feature, index) => (
-          <li key={index} className="list-group-item">
-            <b>Body Part: </b> {`${feature.part}    `}
-            <b>Color: </b> {`${feature.color}   `}
+      <div className="card-body">
+        <ul className="list-group list-group-flush dinoFeatures">
+          {dinosaur.features.map((feature, index) => (
+            <li key={index} className="list-group-item">
+              <b>Body Part: </b> {`${feature.part}    `}
+              <b>Color: </b> {`${feature.color}   `}
+              <button
+                className="btn btn-success selectAttackButton"
+                onClick={(e) => chooseDinoAttack(index)}
+              >
+                Choose This Dino/Attack
+              </button>
+            </li>
+          ))}
+          <li key="default" className="list-group-item">
+            <b>Default Attack: </b> {`Charge!   `}
             <button
               className="btn btn-success selectAttackButton"
-              onClick={(e) => chooseDinoAttack(index)}
+              onClick={(e) => defaultAttack()}
             >
               Choose This Dino/Attack
             </button>
           </li>
-        ))}
-        <li key="default" className="list-group-item">
-          <b>Default Attack: </b> {`Charge!   `}
-          <button
-            className="btn btn-success selectAttackButton"
-            onClick={(e) => defaultAttack()}
-          >
-            Choose This Dino/Attack
-          </button>
-        </li>
-      </ul>
-      <img
-        src={dinosaur.image}
-        alt="This is the dinosaur."
-        style={{ width: "500px", height: "500px" }}
-      />
+        </ul>
+        <br></br>
+        <img
+          className="centerImage"
+          src={dinosaur.image}
+          alt="This is the dinosaur."
+          style={{ width: "1200px", height: "600px" }}
+        />
+      </div>
     </div>
   );
 };

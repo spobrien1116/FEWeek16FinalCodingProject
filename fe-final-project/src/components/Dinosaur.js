@@ -42,7 +42,7 @@ export const Dinosaur = (props) => {
 
   return (
     <div className="card p-4 m-2" key={dinosaur._id}>
-      <div className="card-header">
+      <div className="card-header cardHeaderNormal">
         <h3 className="cardDinoName">{dinosaur.name}</h3>
         <button
           className="btn btn-danger deleteDinosaurButton"
@@ -51,23 +51,32 @@ export const Dinosaur = (props) => {
           Delete Dinosaur
         </button>
       </div>
-      <ul className="list-group list-group-flush dinoInfo">
-        <li className="list-group-item">
-          <b>Size: </b>
-          {`${dinosaur.size}`}
-        </li>
-        <li className="list-group-item">
-          <b>Diet: </b>
-          {`${dinosaur.diet}`}
-        </li>
-        <li className="list-group-item">
-          <b>Environment: </b>
-          {`${dinosaur.environment}`}
-        </li>
-      </ul>
-      {features({ features, dinosaurID: dinosaur._id, deleteFeature })}
-      <NewFeatureForm addNewFeature={addNewFeature} />
-      <img src={dinosaur.image} alt="This is the dinosaur." />
+      <div className="card-body">
+        <ul className="list-group list-group-flush dinoInfo">
+          <li className="list-group-item">
+            <b>Size: </b>
+            {`${dinosaur.size}`}
+          </li>
+          <li className="list-group-item">
+            <b>Diet: </b>
+            {`${dinosaur.diet}`}
+          </li>
+          <li className="list-group-item">
+            <b>Environment: </b>
+            {`${dinosaur.environment}`}
+          </li>
+        </ul>
+        {features({ features, dinosaurID: dinosaur._id, deleteFeature })}
+        <br></br>
+        <NewFeatureForm addNewFeature={addNewFeature} />
+        <br></br>
+        <img
+          className="centerImage"
+          src={dinosaur.image}
+          alt="This is the dinosaur."
+          style={{ width: "1400px", height: "700px" }}
+        />
+      </div>
     </div>
   );
 };
