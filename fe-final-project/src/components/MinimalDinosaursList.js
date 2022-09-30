@@ -10,6 +10,7 @@ export class MinimalDinosaursList extends React.Component {
     this.state = {
       dinosaurs: [],
       battlingDinosaurs: [],
+      battleStatus: [],
     };
   }
 
@@ -87,19 +88,20 @@ export class MinimalDinosaursList extends React.Component {
         Afterwards, the battlingDinosaurs database should have its contents be deleted. */
         let dino1HP = battlingDinosaurs[0].health;
         let dino2HP = battlingDinosaurs[1].health;
+        const battleStatus = this.state.battleStatus;
         do {
-          console.log(
+          battleStatus.push(
             `${battlingDinosaurs[0].name} uses ${battlingDinosaurs[0].attack} to attack ${battlingDinosaurs[1].name} for ${battlingDinosaurs[0].power} damage!`
           );
-          console.log(
+          battleStatus.push(
             `${battlingDinosaurs[1].name} uses ${battlingDinosaurs[1].attack} to attack ${battlingDinosaurs[0].name} for ${battlingDinosaurs[1].power} damage!`
           );
-          console.log(
+          battleStatus.push(
             `${battlingDinosaurs[0].name}  went from ${dino1HP} health to ${
               dino1HP - battlingDinosaurs[1].power
             } health.`
           );
-          console.log(
+          battleStatus.push(
             `${battlingDinosaurs[1].name}  went from ${dino2HP} health to ${
               dino2HP - battlingDinosaurs[0].power
             } health.`
@@ -108,12 +110,13 @@ export class MinimalDinosaursList extends React.Component {
           dino2HP = dino2HP - battlingDinosaurs[0].power;
         } while (dino1HP > 0 && dino2HP > 0);
         if (dino1HP > 0 && dino2HP <= 0) {
-          console.log(`${battlingDinosaurs[0].name} is the winner!`);
+          battleStatus.push(`${battlingDinosaurs[0].name} is the winner!`);
         } else if (dino2HP > 0 && dino1HP <= 0) {
-          console.log(`${battlingDinosaurs[1].name} is the winner!`);
+          battleStatus.push(`${battlingDinosaurs[1].name} is the winner!`);
         } else {
-          console.log("Oh no, both dinosaurs passed out! It is a tie.");
+          battleStatus.push("Oh no, both dinosaurs passed out! It is a tie.");
         }
+        this.setState({ battleStatus });
         const emptyBattlingDinosaurs1 = await this.deleteBattleDinosaurs(
           battlingDinosaurs[1]._id
         );
@@ -129,12 +132,14 @@ export class MinimalDinosaursList extends React.Component {
           emptyBattlingDinosaurs0
         );
         this.setState({ battlingDinosaurs: emptyBattlingDinosaurs0 });
+        setTimeout(() => this.setState({ battleStatus: [] }), 15000);
       }
     } else {
       console.log("Only two dinosaurs can battle at a time!");
     }
   };
 
+  // Function that is passed down into the MinimalDinosaur component.
   readyForBattle = (chosenDinosaurAndAttack) => {
     console.log("Inside the readyForBattle function!");
     console.log(
@@ -181,6 +186,7 @@ export class MinimalDinosaursList extends React.Component {
   render() {
     return (
       <div className="data-for-battles">
+        <h1>Choose Your Battling Dinosaur And Its Attack!</h1>
         <div className="minimal-dinosaurs-list">
           {this.state.dinosaurs.map((dinosaur) => (
             <MinimalDinosaur
@@ -191,13 +197,19 @@ export class MinimalDinosaursList extends React.Component {
           ))}
         </div>
         <div className="battling-dinosaurs">
-          <h1>Let the battle begin!</h1>
+          <h1>Chosen Battling Dinosaurs</h1>
           {this.state.battlingDinosaurs.map((dinosaur) => (
             <BattleDinosaur
               dinosaur={dinosaur}
               key={`battle${dinosaur._id}`}
               deleteThisBattleDinosaur={this.deleteThisBattleDinosaur}
             />
+          ))}
+        </div>
+        <div className="battle-status">
+          <h1>Battle History</h1>
+          {this.state.battleStatus.map((message, index) => (
+            <div key={index}>{message}</div>
           ))}
         </div>
       </div>
