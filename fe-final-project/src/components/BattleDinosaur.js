@@ -1,12 +1,22 @@
 import React from "react";
 
 export const BattleDinosaur = (props) => {
-  const { dinosaur } = props;
+  const { dinosaur, deleteThisBattleDinosaur } = props;
+
+  const deleteBattleDinosaurByID = (dinosaurID) => {
+    deleteThisBattleDinosaur(dinosaurID);
+  };
 
   return (
     <div className="card p-4 m-2" key={dinosaur._id}>
       <div className="card-header cardHeaderBattle">
         <h3 className="cardBattleDinoName">{dinosaur.name}</h3>
+        <button
+          className="btn btn-danger deleteDinosaurButton"
+          onClick={(e) => deleteBattleDinosaurByID(dinosaur._id)}
+        >
+          Remove This Battle Dinosaur
+        </button>
       </div>
       <div className="card-body">
         <ul className="list-group list-group-flush">

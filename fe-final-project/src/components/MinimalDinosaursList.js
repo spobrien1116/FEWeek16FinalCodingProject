@@ -49,6 +49,15 @@ export class MinimalDinosaursList extends React.Component {
     return this.fetchBattleDinosaurs();
   };
 
+  deleteThisBattleDinosaur = async (id) => {
+    console.log(
+      "An asynchronous API call has been made to DELETE (delete) a battling dinosaur!"
+    );
+    await dinosaurBattlesAPI.delete(id);
+    const battleDinosaursRemaining = await this.fetchBattleDinosaurs();
+    this.setState({ battlingDinosaurs: battleDinosaursRemaining });
+  };
+
   createBattleDinosaur = async (battleReadyDino) => {
     console.log("Inside the createBattleDinosaur function!");
     console.log("The current state of dinosaurs:", this.state.dinosaurs);
@@ -184,7 +193,11 @@ export class MinimalDinosaursList extends React.Component {
         <div className="battling-dinosaurs">
           <h1>Let the battle begin!</h1>
           {this.state.battlingDinosaurs.map((dinosaur) => (
-            <BattleDinosaur dinosaur={dinosaur} key={`battle${dinosaur._id}`} />
+            <BattleDinosaur
+              dinosaur={dinosaur}
+              key={`battle${dinosaur._id}`}
+              deleteThisBattleDinosaur={this.deleteThisBattleDinosaur}
+            />
           ))}
         </div>
       </div>
