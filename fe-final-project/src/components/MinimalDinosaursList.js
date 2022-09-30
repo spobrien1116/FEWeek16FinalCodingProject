@@ -41,11 +41,11 @@ export class MinimalDinosaursList extends React.Component {
     return battlingDinosaurs;
   };
 
-  deleteBattleDinosaurs = async () => {
+  deleteBattleDinosaurs = async (id) => {
     console.log(
       "An asynchronous API call has been made to DELETE (delete) all battling dinosaurs!"
     );
-    await dinosaurBattlesAPI.delete();
+    await dinosaurBattlesAPI.delete(id);
     return this.fetchBattleDinosaurs();
   };
 
@@ -105,8 +105,21 @@ export class MinimalDinosaursList extends React.Component {
         } else {
           console.log("Oh no, both dinosaurs passed out! It is a tie.");
         }
-        const emptyBattlingDinosaurs = await this.deleteBattleDinosaurs();
-        this.setState({ battlingDinosaurs: emptyBattlingDinosaurs });
+        const emptyBattlingDinosaurs1 = await this.deleteBattleDinosaurs(
+          battlingDinosaurs[1]._id
+        );
+        console.log(
+          "The battlingDinosaurs array after deleting element 1:",
+          emptyBattlingDinosaurs1
+        );
+        const emptyBattlingDinosaurs0 = await this.deleteBattleDinosaurs(
+          battlingDinosaurs[0]._id
+        );
+        console.log(
+          "The battlingDinosaurs array after deleting element 0:",
+          emptyBattlingDinosaurs0
+        );
+        this.setState({ battlingDinosaurs: emptyBattlingDinosaurs0 });
       }
     } else {
       console.log("Only two dinosaurs can battle at a time!");
